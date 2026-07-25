@@ -5,13 +5,17 @@
 #!icon=https://raw.githubusercontent.com/Yu9191/wloc/eec07a8dc8de6dbaee8eac1fb376e4d03020154a/wloc.jpg
 #!category=Tools
 
-# VENDORED / PINNED — script-path 钉死到 upstream commit eec07a8dc8de6dbaee8eac1fb376e4d03020154a（内容不可变，上游改 main 不影响本设备）。
+# VENDORED / SELF-HOSTED / PINNED — script-path 指向本仓库自己的副本，钉死 commit
+#   c18856532ee6663d81ec38a923c960b31b8abe30（raw by SHA = 内容不可变）。
+# 内容与 upstream commit eec07a8dc8de6dbaee8eac1fb376e4d03020154a 逐字节一致，已核对 SHA256:
+#   dist/wloc.js          d385c624efd59bdd2cff56bf819a770b40c4abf0f970818877f1dca4174f256a
+#   dist/wloc-settings.js b4e9d69e69c703b3fab485a559825aaedc9e3a1fd9c06e81cb35d10bbdcd13d2
+# 自托管的意义: 上游删库/改名不会让本设备的脚本 404 失效。
 # 已本地审计: 两脚本零外联，仅读写本地持久化 key wloc_settings。升级 SHA 前必须重新 review。
-# 若改用你自己的 fork/NAS 托管，把下方两个 raw.githubusercontent.com/Yu9191/wloc/<SHA> 换成你的 host 即可。
 
 [Script]
-Apple WLOC = type=http-response,pattern=^https?:\/\/gs-loc(-cn)?\.apple\.com\/clls\/wloc,requires-body=1,binary-body-mode=1,max-size=0,timeout=30,script-path=https://raw.githubusercontent.com/Yu9191/wloc/eec07a8dc8de6dbaee8eac1fb376e4d03020154a/dist/wloc.js,argument=longitude=113.94114&latitude=22.544577&accuracy=25&logLevel=info
-WLOC Settings = type=http-request,pattern=^https?:\/\/gs-loc(-cn)?\.apple\.com\/wloc-settings\/save,requires-body=0,max-size=0,timeout=10,script-path=https://raw.githubusercontent.com/Yu9191/wloc/eec07a8dc8de6dbaee8eac1fb376e4d03020154a/dist/wloc-settings.js
+Apple WLOC = type=http-response,pattern=^https?:\/\/gs-loc(-cn)?\.apple\.com\/clls\/wloc,requires-body=1,binary-body-mode=1,max-size=0,timeout=30,script-path=https://raw.githubusercontent.com/mathew-ma/wloc-vendor/c18856532ee6663d81ec38a923c960b31b8abe30/dist/wloc.js,argument=longitude=113.94114&latitude=22.544577&accuracy=25&logLevel=info
+WLOC Settings = type=http-request,pattern=^https?:\/\/gs-loc(-cn)?\.apple\.com\/wloc-settings\/save,requires-body=0,max-size=0,timeout=10,script-path=https://raw.githubusercontent.com/mathew-ma/wloc-vendor/c18856532ee6663d81ec38a923c960b31b8abe30/dist/wloc-settings.js
 
 [MITM]
 hostname = %APPEND% gs-loc.apple.com, gs-loc-cn.apple.com
